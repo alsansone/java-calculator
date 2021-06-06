@@ -1,0 +1,10 @@
+.root {
+    -fx-font-size: 24px;
+    -fx-padding: 5px;
+}
+
+.button:hover {
+    -fx-background-color: #0349fc;
+    -fx-font-size: 28px;
+    -fx-text-fill: whitesmoke;
+}
