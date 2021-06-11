@@ -5,6 +5,6 @@
 
 .button:hover {
     -fx-background-color: #0349fc;
-    -fx-font-size: 28px;
+    -fx-font-size: 26px;
     -fx-text-fill: whitesmoke;
 }

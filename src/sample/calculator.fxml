@@ -10,38 +10,51 @@
          <Insets bottom="5.0" top="5.0" />
       </VBox.margin></TextField>
     <GridPane>
-        <Button fx:id="one" mnemonicParsing="false" onAction="#handleButtonPress" prefHeight="500.0" prefWidth="500.0" text="1" GridPane.columnIndex="0" GridPane.rowIndex="0">
+        <Button fx:id="openP" mnemonicParsing="false" onAction="#handleButtonPress" prefHeight="500.0" prefWidth="500.0" text="(" GridPane.columnIndex="0" GridPane.rowIndex="0">
         </Button>
-        <Button fx:id="two" mnemonicParsing="false" onAction="#handleButtonPress" prefHeight="500.0" prefWidth="500.0" text="2" GridPane.columnIndex="1" GridPane.rowIndex="0">
+        <Button fx:id="closeP" mnemonicParsing="false" onAction="#handleButtonPress" prefHeight="500.0" prefWidth="500.0" text=")" GridPane.columnIndex="1" GridPane.rowIndex="0">
         </Button>
-        <Button fx:id="three" mnemonicParsing="false" onAction="#handleButtonPress" prefHeight="500.0" prefWidth="500.0" text="3" GridPane.columnIndex="2" GridPane.rowIndex="0">
+        <Button fx:id="clear" mnemonicParsing="false" onAction="#handleButtonPress" prefHeight="500.0" prefWidth="500.0" text="C" GridPane.columnIndex="2" GridPane.rowIndex="0">
         </Button>
-        <Button fx:id="plus" mnemonicParsing="false" onAction="#handleButtonPress" prefHeight="500.0" prefWidth="500.0" text="+" GridPane.columnIndex="3" GridPane.rowIndex="0">
+        <Button fx:id="div" mnemonicParsing="false" onAction="#handleButtonPress" prefHeight="500.0" prefWidth="500.0" text="/" GridPane.columnIndex="3" GridPane.rowIndex="0">
         </Button>
-        <Button fx:id="four" mnemonicParsing="false" onAction="#handleButtonPress" prefHeight="500.0" prefWidth="500.0" text="4" GridPane.columnIndex="0" GridPane.rowIndex="1">
+
+        <Button fx:id="seven" mnemonicParsing="false" onAction="#handleButtonPress" prefHeight="500.0" prefWidth="500.0" text="7" GridPane.columnIndex="0" GridPane.rowIndex="1">
         </Button>
-        <Button fx:id="five" mnemonicParsing="false" onAction="#handleButtonPress" prefHeight="500.0" prefWidth="500.0" text="5" GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <Button fx:id="eight" mnemonicParsing="false" onAction="#handleButtonPress" prefHeight="500.0" prefWidth="500.0" text="8" GridPane.columnIndex="1" GridPane.rowIndex="1">
         </Button>
-        <Button fx:id="six" mnemonicParsing="false" onAction="#handleButtonPress" prefHeight="500.0" prefWidth="500.0" text="6" GridPane.columnIndex="2" GridPane.rowIndex="1">
+        <Button fx:id="nine" mnemonicParsing="false" onAction="#handleButtonPress" prefHeight="500.0" prefWidth="500.0" text="9" GridPane.columnIndex="2" GridPane.rowIndex="1">
         </Button>
-        <Button fx:id="minus" mnemonicParsing="false" onAction="#handleButtonPress" prefHeight="500.0" prefWidth="500.0" text="-" GridPane.columnIndex="3" GridPane.rowIndex="1">
+        <Button fx:id="mult" mnemonicParsing="false" onAction="#handleButtonPress" prefHeight="500.0" prefWidth="500.0" text="*" GridPane.columnIndex="3" GridPane.rowIndex="1">
         </Button>
-        <Button fx:id="seven" mnemonicParsing="false" onAction="#handleButtonPress" prefHeight="500.0" prefWidth="500.0" text="7" GridPane.columnIndex="0" GridPane.rowIndex="2">
+
+        <Button fx:id="four" mnemonicParsing="false" onAction="#handleButtonPress" prefHeight="500.0" prefWidth="500.0" text="4" GridPane.columnIndex="0" GridPane.rowIndex="2">
         </Button>
-        <Button fx:id="eight" mnemonicParsing="false" onAction="#handleButtonPress" prefHeight="500.0" prefWidth="500.0" text="8" GridPane.columnIndex="1" GridPane.rowIndex="2">
+        <Button fx:id="five" mnemonicParsing="false" onAction="#handleButtonPress" prefHeight="500.0" prefWidth="500.0" text="5" GridPane.columnIndex="1" GridPane.rowIndex="2">
         </Button>
-        <Button fx:id="nine" mnemonicParsing="false" onAction="#handleButtonPress" prefHeight="500.0" prefWidth="500.0" text="9" GridPane.columnIndex="2" GridPane.rowIndex="2">
+        <Button fx:id="six" mnemonicParsing="false" onAction="#handleButtonPress" prefHeight="500.0" prefWidth="500.0" text="6" GridPane.columnIndex="2" GridPane.rowIndex="2">
         </Button>
-        <Button fx:id="mult" mnemonicParsing="false" onAction="#handleButtonPress" prefHeight="500.0" prefWidth="500.0" text="*" GridPane.columnIndex="3" GridPane.rowIndex="2">
+        <Button fx:id="minus" mnemonicParsing="false" onAction="#handleButtonPress" prefHeight="500.0" prefWidth="500.0" text="-" GridPane.columnIndex="3" GridPane.rowIndex="2">
         </Button>
-        <Button fx:id="zero" mnemonicParsing="false" onAction="#handleButtonPress" prefHeight="500.0" prefWidth="500.0" text="0" GridPane.columnIndex="0" GridPane.rowIndex="3">
+
+        <Button fx:id="one" mnemonicParsing="false" onAction="#handleButtonPress" prefHeight="500.0" prefWidth="500.0" text="1" GridPane.columnIndex="0" GridPane.rowIndex="3">
         </Button>
-        <Button fx:id="equals" mnemonicParsing="false" onAction="#handleButtonPress" prefHeight="500.0" prefWidth="500.0" text="=" GridPane.columnIndex="1" GridPane.rowIndex="3">
+        <Button fx:id="two" mnemonicParsing="false" onAction="#handleButtonPress" prefHeight="500.0" prefWidth="500.0" text="2" GridPane.columnIndex="1" GridPane.rowIndex="3">
         </Button>
-        <Button fx:id="clear" mnemonicParsing="false" onAction="#handleButtonPress" prefHeight="500.0" prefWidth="500.0" text="C" GridPane.columnIndex="2" GridPane.rowIndex="3">
+        <Button fx:id="three" mnemonicParsing="false" onAction="#handleButtonPress" prefHeight="500.0" prefWidth="500.0" text="3" GridPane.columnIndex="2" GridPane.rowIndex="3">
         </Button>
-        <Button fx:id="div" mnemonicParsing="false" onAction="#handleButtonPress" prefHeight="500.0" prefWidth="500.0" text="/" GridPane.columnIndex="3" GridPane.rowIndex="3">
+        <Button fx:id="plus" mnemonicParsing="false" onAction="#handleButtonPress" prefHeight="500.0" prefWidth="500.0" text="+" GridPane.columnIndex="3" GridPane.rowIndex="3">
         </Button>
+
+        <Button fx:id="unary" mnemonicParsing="false" onAction="#handleButtonPress" prefHeight="500.0" prefWidth="500.0" text="+/-" GridPane.columnIndex="0" GridPane.rowIndex="4">
+        </Button>
+        <Button fx:id="zero" mnemonicParsing="false" onAction="#handleButtonPress" prefHeight="500.0" prefWidth="500.0" text="0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+        </Button>
+        <Button fx:id="point" mnemonicParsing="false" onAction="#handleButtonPress" prefHeight="500.0" prefWidth="500.0" text="." GridPane.columnIndex="2" GridPane.rowIndex="4">
+        </Button>
+        <Button fx:id="equals" mnemonicParsing="false" onAction="#handleButtonPress" prefHeight="500.0" prefWidth="500.0" text="=" GridPane.columnIndex="3" GridPane.rowIndex="4">
+        </Button>
+
         <columnConstraints>
             <ColumnConstraints />
             <ColumnConstraints />
@@ -49,6 +62,7 @@
             <ColumnConstraints />
         </columnConstraints>
         <rowConstraints>
+            <RowConstraints />
             <RowConstraints />
             <RowConstraints />
             <RowConstraints />

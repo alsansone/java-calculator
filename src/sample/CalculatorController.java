@@ -5,9 +5,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+
 public class CalculatorController {
 
-    private final StringBuilder equation = new StringBuilder();
+    ArrayList<Character> equation = new ArrayList<>();
 
     @FXML
     private TextField display;
@@ -58,62 +61,96 @@ public class CalculatorController {
     private Button div;
 
     @FXML
+    private Button openP;
+
+    @FXML
+    private Button closeP;
+
+    @FXML
+    private Button unary;
+
+    @FXML
+    private Button point;
+
+    @FXML
     void handleButtonPress(ActionEvent event) {
         if (event.getSource() == one) {
-            equation.append('1');
-            display.setText(display.getText() + "1");
+            equation.add('1');
+            display.setText(display.getText() + '1');
         } else if (event.getSource() == two) {
-            equation.append('2');
-            display.setText(display.getText() + "2");
+            equation.add('2');
+            display.setText(display.getText() + '2');
         } else if (event.getSource() == three) {
-            equation.append('3');
-            display.setText(display.getText() + "3");
+            equation.add('3');
+            display.setText(display.getText() + '3');
         } else if (event.getSource() == four) {
-            equation.append('4');
-            display.setText(display.getText() + "4");
+            equation.add('4');
+            display.setText(display.getText() + '4');
         } else if (event.getSource() == five) {
-            equation.append('5');
-            display.setText(display.getText() + "5");
+            equation.add('5');
+            display.setText(display.getText() + '5');
         } else if (event.getSource() == six) {
-            equation.append('6');
-            display.setText(display.getText() + "6");
+            equation.add('6');
+            display.setText(display.getText() + '6');
         } else if (event.getSource() == seven) {
-            equation.append('7');
-            display.setText(display.getText() + "7");
+            equation.add('7');
+            display.setText(display.getText() + '7');
         } else if (event.getSource() == eight) {
-            equation.append('8');
-            display.setText(display.getText() + "8");
+            equation.add('8');
+            display.setText(display.getText() + '8');
         } else if (event.getSource() == nine) {
-            equation.append('9');
-            display.setText(display.getText() + "9");
+            equation.add('9');
+            display.setText(display.getText() + '9');
         } else if (event.getSource() == zero) {
-            equation.append('0');
-            display.setText(display.getText() + "0");
+            equation.add('0');
+            display.setText(display.getText() + '0');
         } else if (event.getSource() == clear) {
-            equation.setLength(0);
+            equation.clear();
             display.setText("");
         } else if (event.getSource() == plus) {
-            if (checkCurrentTextInput()) {
-                equation.append('+');
-                display.setText(display.getText() + "+");
+            if (isValidInput() && !isInputEmpty()) {
+                equation.add('+');
+                display.setText(display.getText() + '+');
             }
         } else if (event.getSource() == minus) {
-            if (checkCurrentTextInput()) {
-                equation.append('-');
-                display.setText(display.getText() + "-");
+            if (isValidInput() && !isInputEmpty()) {
+                equation.add('-');
+                display.setText(display.getText() + '-');
             }
         } else if (event.getSource() == mult) {
-            if (checkCurrentTextInput()) {
-                equation.append('*');
-                display.setText(display.getText() + "*");
+            if (isValidInput() && !isInputEmpty()) {
+                equation.add('*');
+                display.setText(display.getText() + '*');
             }
         } else if (event.getSource() == div) {
-            if (checkCurrentTextInput()) {
-                equation.append('/');
-                display.setText(display.getText() + "/");
+            if (isValidInput() && !isInputEmpty()) {
+                equation.add('/');
+                display.setText(display.getText() + '/');
+            }
+        } else if (event.getSource() == openP) {
+            equation.add('(');
+                display.setText(display.getText() + '(');
+        } else if (event.getSource() == closeP) {
+            equation.add(')');
+                display.setText(display.getText() + ')');
+        } else if (event.getSource() == point) {
+            if (isInputEmpty()) {
+                equation.add('0');
+                equation.add('.');
+                display.setText(display.getText() + "0.");
+            } else if (!equation.contains('.') && isValidInput()) {
+                equation.add('.');
+                display.setText(display.getText() + ".");
+            }
+        } else if (event.getSource() == unary) {
+            // convert Character array to String
+            String s = equation.stream().map(Object::toString).collect(Collectors.joining());
+            if (!isInputEmpty() && isNumeric(s) && s.indexOf('-') == -1) {
+                equation.add(0, '-');
+                display.setText("-" + display.getText());
             }
         } else {
-            if (equation.length() != 0) {
+            if (equation.size() != 0) {
                 double result = eval(equation.toString());
                 if (result == Double.POSITIVE_INFINITY)
                     display.setText("Cannot divide by zero");
@@ -187,9 +224,20 @@ public class CalculatorController {
         }.parse();
     }
 
-    private boolean checkCurrentTextInput() {
-        if (equation.length() == 0)
+    private boolean isNumeric(String s) {
+        try {
+            Double.parseDouble(s);
+        } catch (NumberFormatException ex) {
             return false;
-        return equation.charAt(0) != '+' && equation.charAt(0) != '-' && equation.charAt(0) != '*' && equation.charAt(0) != '/';
+        }
+        return true;
+    }
+
+    private boolean isInputEmpty() {
+        return equation.size() == 0;
+    }
+
+    private boolean isValidInput() {
+        return equation.get(0) != '+' && equation.get(0) != '-' && equation.get(0) != '*' && equation.get(0) != '/';
     }
 }
