@@ -6,11 +6,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
+import java.util.Arrays;
+import java.util.List;
 
 public class CalculatorController {
 
-    ArrayList<Character> equation = new ArrayList<>();
+    StringBuilder expression = new StringBuilder();
+    List<Character> OPERATORS = Arrays.asList('+', '-', '*', '/');
+
+
 
     @FXML
     private TextField display;
@@ -61,12 +65,6 @@ public class CalculatorController {
     private Button div;
 
     @FXML
-    private Button openP;
-
-    @FXML
-    private Button closeP;
-
-    @FXML
     private Button unary;
 
     @FXML
@@ -75,89 +73,115 @@ public class CalculatorController {
     @FXML
     void handleButtonPress(ActionEvent event) {
         if (event.getSource() == one) {
-            equation.add('1');
+            expression.append('1');
             display.setText(display.getText() + '1');
         } else if (event.getSource() == two) {
-            equation.add('2');
+            expression.append('2');
             display.setText(display.getText() + '2');
         } else if (event.getSource() == three) {
-            equation.add('3');
+            expression.append('3');
             display.setText(display.getText() + '3');
         } else if (event.getSource() == four) {
-            equation.add('4');
+            expression.append('4');
             display.setText(display.getText() + '4');
         } else if (event.getSource() == five) {
-            equation.add('5');
+            expression.append('5');
             display.setText(display.getText() + '5');
         } else if (event.getSource() == six) {
-            equation.add('6');
+            expression.append('6');
             display.setText(display.getText() + '6');
         } else if (event.getSource() == seven) {
-            equation.add('7');
+            expression.append('7');
             display.setText(display.getText() + '7');
         } else if (event.getSource() == eight) {
-            equation.add('8');
+            expression.append('8');
             display.setText(display.getText() + '8');
         } else if (event.getSource() == nine) {
-            equation.add('9');
+            expression.append('9');
             display.setText(display.getText() + '9');
         } else if (event.getSource() == zero) {
-            equation.add('0');
+            expression.append('0');
             display.setText(display.getText() + '0');
         } else if (event.getSource() == clear) {
-            equation.clear();
+            expression = new StringBuilder();
             display.setText("");
         } else if (event.getSource() == plus) {
-            if (isValidInput() && !isInputEmpty()) {
-                equation.add('+');
+            if (!isExpressionEmpty() && canPlaceOperator()) {
+                expression.append('+');
                 display.setText(display.getText() + '+');
             }
         } else if (event.getSource() == minus) {
-            if (isValidInput() && !isInputEmpty()) {
-                equation.add('-');
+            if (isExpressionEmpty() || canPlaceOperator()) {
+                expression.append('-');
                 display.setText(display.getText() + '-');
             }
         } else if (event.getSource() == mult) {
-            if (isValidInput() && !isInputEmpty()) {
-                equation.add('*');
+            if (!isExpressionEmpty() && canPlaceOperator()) {
+                expression.append('*');
                 display.setText(display.getText() + '*');
             }
         } else if (event.getSource() == div) {
-            if (isValidInput() && !isInputEmpty()) {
-                equation.add('/');
+            if (!isExpressionEmpty() && canPlaceOperator()) {
+                expression.append('/');
                 display.setText(display.getText() + '/');
             }
-        } else if (event.getSource() == openP) {
-            equation.add('(');
-                display.setText(display.getText() + '(');
-        } else if (event.getSource() == closeP) {
-            equation.add(')');
-                display.setText(display.getText() + ')');
         } else if (event.getSource() == point) {
-            if (isInputEmpty()) {
-                equation.add('0');
-                equation.add('.');
+            if (isExpressionEmpty() || (expression.length() == 1 && expression.charAt(0) == '-')) {
+                expression.append("0.");
                 display.setText(display.getText() + "0.");
-            } else if (!equation.contains('.') && isValidInput()) {
-                equation.add('.');
-                display.setText(display.getText() + ".");
+            } else {
+                if (canPlaceDecimal()) {
+                    expression.append('.');
+                    display.setText(display.getText() + '.');
+                }
             }
         } else if (event.getSource() == unary) {
-            // convert Character array to String
-            String s = equation.stream().map(Object::toString).collect(Collectors.joining());
-            if (!isInputEmpty() && isNumeric(s) && s.indexOf('-') == -1) {
-                equation.add(0, '-');
-                display.setText("-" + display.getText());
+            String s = expression.toString();
+            if (!isExpressionEmpty() && isNumeric(s)) {
+                double number = Double.parseDouble(s) * -1;
+                if (number < 0) {
+                    expression.insert(0, '-');
+                    display.setText("-" + display.getText());
+                } else {
+                    expression.deleteCharAt(0);
+                    display.setText(display.getText().substring(1));
+                }
             }
         } else {
-            if (equation.size() != 0) {
-                double result = eval(equation.toString());
+            if (expression.length() != 0) {
+                double result = eval(expression.toString());
                 if (result == Double.POSITIVE_INFINITY)
                     display.setText("Cannot divide by zero");
                 else
                     display.setText(Double.toString(result));
             }
         }
+    }
+
+    private boolean canPlaceDecimal() {
+        if (expression.charAt(expression.length()-1) == '.') {
+            return false;
+        }
+        StringBuilder number = new StringBuilder();
+        for (int i = expression.length()-1; i >= 0; i--) {
+             if (OPERATORS.contains(expression.charAt(i)))
+                 break;
+             number.insert(0, expression.charAt(i));
+        }
+        return isNumeric(number.toString()) && number.indexOf(".") == -1;
+    }
+
+    private boolean canPlaceOperator() {
+        return !OPERATORS.contains(expression.charAt(expression.length()-1));
+//        for (char operator : OPERATORS) {
+//            if (expression.charAt(expression.length()-1) == operator)
+//                return false;
+//        }
+//        return true;
+    }
+
+    private boolean isExpressionEmpty() {
+        return expression.length() == 0;
     }
 
     private double eval(final String str) {
@@ -214,7 +238,10 @@ public class CalculatorController {
             private double parseFactor() {
                 double x = 0;
                 int startPos = this.pos;
-                if ((ch >= '0' && ch <= '9') || ch == '.') {
+                if (eat('(')) {
+                    x = parseExpression();
+                    eat(')');
+                } else if ((ch >= '0' && ch <= '9') || ch == '.') {
                     while ((ch >= '0' && ch <= '9') || ch == '.')
                         nextChar();
                     x = Double.parseDouble(str.substring(startPos, this.pos));
@@ -231,13 +258,5 @@ public class CalculatorController {
             return false;
         }
         return true;
-    }
-
-    private boolean isInputEmpty() {
-        return equation.size() == 0;
-    }
-
-    private boolean isValidInput() {
-        return equation.get(0) != '+' && equation.get(0) != '-' && equation.get(0) != '*' && equation.get(0) != '/';
     }
 }
