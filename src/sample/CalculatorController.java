@@ -5,6 +5,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -149,11 +151,12 @@ public class CalculatorController {
             }
         } else {
             if (expression.length() != 0) {
-                double result = eval(expression.toString());
-                if (result == Double.POSITIVE_INFINITY)
+                try {
+                    BigDecimal result = eval(expression.toString());
+                    display.setText(result.toString());
+                } catch (ArithmeticException e) {
                     display.setText("Cannot divide by zero");
-                else
-                    display.setText(Double.toString(result));
+                }
             }
         }
     }
@@ -173,26 +176,21 @@ public class CalculatorController {
 
     private boolean canPlaceOperator() {
         return !OPERATORS.contains(expression.charAt(expression.length()-1));
-//        for (char operator : OPERATORS) {
-//            if (expression.charAt(expression.length()-1) == operator)
-//                return false;
-//        }
-//        return true;
     }
 
     private boolean isExpressionEmpty() {
         return expression.length() == 0;
     }
 
-    private double eval(final String str) {
+    private BigDecimal eval(final String str) {
         return new Object() {
             int pos = -1, ch;
 
-            void nextChar() {
+            private void nextChar() {
                 ch = (++pos < str.length()) ? str.charAt(pos) : -1;
             }
 
-            boolean eat(int charToEat) {
+            private boolean eat(int charToEat) {
                 while (ch == ' ')
                     nextChar();
                 if (ch == charToEat) {
@@ -202,7 +200,7 @@ public class CalculatorController {
                 return false;
             }
 
-            double parse() {
+            private BigDecimal parse() {
                 nextChar();
                 return parseExpression();
             }
@@ -211,32 +209,32 @@ public class CalculatorController {
             // expression = term | expression `+` term | expression `-` term
             // term = factor | term `*` factor | term `/` factor
             // factor = `+` factor | `-` factor | number
-            double parseExpression() {
-                double x = parseTerm();
+            private BigDecimal parseExpression() {
+                BigDecimal x = parseTerm();
                 while (true) {
                     if (eat('+'))
-                        x += parseTerm();
+                        x = x.add(parseTerm());
                     else if (eat('-'))
-                        x -= parseTerm();
+                        x = x.subtract(parseTerm());
                     else
                         return x;
                 }
             }
 
-            double parseTerm() {
-                double x = parseFactor();
+            private BigDecimal parseTerm() {
+                BigDecimal x = parseFactor();
                 while (true) {
                     if (eat('*'))
-                        x *= parseFactor();
+                        x = x.multiply(parseFactor());
                     else if (eat('/'))
-                        x /= parseFactor();
+                            x = x.divide(parseFactor(), RoundingMode.DOWN);
                     else
                         return x;
                 }
             }
 
-            private double parseFactor() {
-                double x = 0;
+            private BigDecimal parseFactor() {
+                BigDecimal x = new BigDecimal(0);
                 int startPos = this.pos;
                 if (eat('(')) {
                     x = parseExpression();
@@ -244,7 +242,7 @@ public class CalculatorController {
                 } else if ((ch >= '0' && ch <= '9') || ch == '.') {
                     while ((ch >= '0' && ch <= '9') || ch == '.')
                         nextChar();
-                    x = Double.parseDouble(str.substring(startPos, this.pos));
+                    x = BigDecimal.valueOf(Double.parseDouble(str.substring(startPos, this.pos)));
                 }
                 return x;
             }
