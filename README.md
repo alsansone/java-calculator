@@ -23,4 +23,4 @@ Since JavaFX is no longer included in Java follow the directions below to get it
 
 ## Demo
 
-[Calculator Demo](CalculatorAnimation.gif)
+![Calculator Demo](CalculatorAnimation.gif)
