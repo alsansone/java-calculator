@@ -20,3 +20,7 @@ You can download JavaFX [here](https://gluonhq.com/products/javafx/)
 Since JavaFX is no longer included in Java follow the directions below to get it set up
 
 [Getting Started with JavaFX](https://openjfx.io/openjfx-docs/)
+
+## Demo
+
+[Calculator Demo](CalculatorAnimation.gif)
