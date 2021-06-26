@@ -7,16 +7,15 @@ import javafx.scene.control.TextField;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class CalculatorController {
 
-    StringBuilder expression = new StringBuilder();
-    List<Character> OPERATORS = Arrays.asList('+', '-', '*', '/');
-
-
+    private StringBuilder expression = new StringBuilder();
+    private final List<Character> OPERATORS = Arrays.asList('+', '-', '*', '/');
+    private int numberOfOpenParenthesis = 0;
+    private int getNumberOfCloseParenthesis = 0;
 
     @FXML
     private TextField display;
@@ -70,7 +69,13 @@ public class CalculatorController {
     private Button unary;
 
     @FXML
-    private Button point;
+    private Button decimal;
+
+    @FXML
+    private Button openP;
+
+    @FXML
+    private Button closeP;
 
     @FXML
     void handleButtonPress(ActionEvent event) {
@@ -127,7 +132,7 @@ public class CalculatorController {
                 expression.append('/');
                 display.setText(display.getText() + '/');
             }
-        } else if (event.getSource() == point) {
+        } else if (event.getSource() == decimal) {
             if (isExpressionEmpty() || (expression.length() == 1 && expression.charAt(0) == '-')) {
                 expression.append("0.");
                 display.setText(display.getText() + "0.");
@@ -149,6 +154,20 @@ public class CalculatorController {
                     display.setText(display.getText().substring(1));
                 }
             }
+        } else if (event.getSource() == openP) {
+            if (!isExpressionEmpty() && isNumeric(expression.charAt(expression.length()-1) + "")) {
+                expression.append("*");
+                display.setText(display.getText() + '*');
+            }
+            expression.append('(');
+            display.setText(display.getText() + '(');
+            numberOfOpenParenthesis++;
+        } else if (event.getSource() == closeP) {
+            if (getNumberOfCloseParenthesis < numberOfOpenParenthesis) {
+                expression.append(')');
+                display.setText(display.getText() + ')');
+                getNumberOfCloseParenthesis++;
+            }
         } else {
             if (expression.length() != 0) {
                 try {
@@ -161,6 +180,9 @@ public class CalculatorController {
         }
     }
 
+    // A decimal can be placed between two numbers or if the input is blank
+    // To determine this we loop through the expression backwards until we find
+    // an operator. If no decimal is encountered or no operator we can place the decimal
     private boolean canPlaceDecimal() {
         if (expression.charAt(expression.length()-1) == '.') {
             return false;
@@ -174,6 +196,7 @@ public class CalculatorController {
         return isNumeric(number.toString()) && number.indexOf(".") == -1;
     }
 
+    // Can't place two operators in a row
     private boolean canPlaceOperator() {
         return !OPERATORS.contains(expression.charAt(expression.length()-1));
     }
@@ -182,6 +205,16 @@ public class CalculatorController {
         return expression.length() == 0;
     }
 
+    private boolean isNumeric(String s) {
+        try {
+            Double.parseDouble(s);
+        } catch (NumberFormatException ex) {
+            return false;
+        }
+        return true;
+    }
+
+    // mathematical expression parser
     private BigDecimal eval(final String str) {
         return new Object() {
             int pos = -1, ch;
@@ -247,14 +280,5 @@ public class CalculatorController {
                 return x;
             }
         }.parse();
-    }
-
-    private boolean isNumeric(String s) {
-        try {
-            Double.parseDouble(s);
-        } catch (NumberFormatException ex) {
-            return false;
-        }
-        return true;
     }
 }
